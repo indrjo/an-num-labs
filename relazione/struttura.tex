@@ -1,0 +1,64 @@
+% !TEX program = lualatex
+% !TEX root = ./relazioni.tex
+
+\documentclass[ structure      = article
+              , maketitlestyle = standard
+              , secstyle       = center
+              , secfont        = roman
+              %, subsecstyle    = center
+              , subsecfont     = roman
+              , headerstyle    = center
+              , liststyle      = aligned
+              , twocolcontents = toc
+              ]{suftesi}
+
+\usepackage[no-math]{fontspec}
+\setmainfont{Linux Libertine O}
+\setmonofont{Source Code Pro}[Scale=MatchLowercase]
+%\usepackage[tt=false]{libertine}
+%\usepackage{sourcecodepro}
+
+\usepackage{polyglossia}
+\setmainlanguage{italian}
+\setotherlanguage{english}
+
+\usepackage[italian=quotes]{csquotes}
+
+\usepackage{hyperref}
+\hypersetup{breaklinks,hidelinks}
+
+\usepackage{anyfontsize}
+
+\usepackage{indentfirst}
+
+%\usepackage[original]{abstract}
+%\renewcommand{\abstracttextfont}{\normalfont\normalsize}
+
+\usepackage{libertinust1math}
+\usepackage{MnSymbol,mathtools}
+\usepackage[bb=ams]{mathalfa}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{esercizio}{Esercizio}[section]
+\newtheorem{nota}{Nota}[section]
+
+\usepackage{listings,xcolor}
+\lstset{
+    language        = Matlab
+  , basicstyle      = \small\ttfamily
+  , commentstyle    = \color{green!50!black}
+  , keywordstyle    = \color{blue!50!black}
+  %, tabsize         = 2
+  , numbers         = left
+  , numberstyle     = \tiny\ttfamily\color{gray!50!black}
+  , numbersep       = 2mm
+  , frame           = leftline
+  , rulecolor       = \color{gray!50!black}
+  , backgroundcolor = \color{gray!3!white}
+  %, mathescape      = true
+  }
+
+
+\newcommand\set[1]{\left\{#1\right\}}
+\newcommand\abs[1]{\left\lVert #1 \right\rVert}
+\newcommand\erre{\mathbb R}
