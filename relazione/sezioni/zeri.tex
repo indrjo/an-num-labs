@@ -1,0 +1,68 @@
+% !TEX program = lualatex
+% !TEX root = ../relazioni.tex
+% !TEX spellcheck = it_IT
+
+\section{Metodi di ricerca di zeri}
+
+\begin{esercizio}
+Scrivere una funzione
+\begin{center}
+\lstinline£[c,fc,iter]=bisezione(f,a,b,tol,itmax)£
+\end{center}
+metodo di bisezione per la ricerca di una funzione \lstinline£f£ nell'intervallo \lstinline£[a, b]£. Qui, \lstinline£tol£ è la tolleranza sull'approssimazione della radice e \lstinline£itmax£ è il numero massimo di iterazioni disposte a fare. Per quanto riguarda l'output, \lstinline£c£ è l'approssimazione trovata, \lstinline£fc£ è \lstinline£f(c)£ e \lstinline£iter£ è il numero di iterazioni fatte effettivamente per arrivare all'approssimazione \lstinline£c£. Testare la funzione per la ricerca di una delle radici di
+\[f(x) := e^x - x^2 - \sin x - 1\]
+sull'intervallo \([-2, 2]\).
+\end{esercizio}
+
+L'implementazione qui sotto usa il \enquote{teorema degli zeri} e l'algoritmo di bisezione.
+
+\lstinputlisting{../zeri/bisezione.m}
+
+Testiamo il metodo di bisezione su \(f\):
+
+\begin{lstlisting}[numbers=none]
+>> f = @(x) exp(x)-x.^2-sin(x)-1;
+>> df = @(x) exp(x)-2*x-cos(x);
+>> [c, fc, it] = bisezione(f, 1, 1.5, 1e-12,100)
+c = 1.2797
+fc = 6.6813e-13
+it = 39
+\end{lstlisting}
+
+% *********************************************************************************************
+
+\begin{esercizio}
+Scrivere una funzione
+\begin{center}
+\lstinline£[c,fc,iter]=newton(f,df,x0,tol,itmax)£
+\end{center}
+che implementa il metodo di \textenglish{Newton-Raphson} per la ricerca di uno zero di una funzione \lstinline£f£ con derivata \lstinline£df£. Qui, \lstinline£x0£ è il punto da cui parte il metodo, \lstinline£tol£ è la tolleranza sull'approssimazione della radice e \lstinline£itmax£ è il numero massimo di iterazioni disposte a fare. Per quanto riguarda l'output, \lstinline£c£ è l'approssimazione trovata, \lstinline£fc£ è \lstinline£f(c)£ e \lstinline£iter£ è il numero di iterazioni fatte effettivamente per arrivare all'approssimazione \lstinline£c£. Testare la funzione per la ricerca di una delle radici di
+\[f(x) := e^x - x^2 - \sin x - 1\]
+sull'intervallo \([-2, 2]\).
+\end{esercizio}
+
+Richiamiamo che il metodo di \textenglish{Newton-Raphson} si scrive come
+\[\begin{cases} x_0 \in \erre \text{ scelto} \\ x_{n+1} = x_n - \frac{f(x_n)}{f^\prime (x_n)} \text{ per } n \in \enne \end{cases}\]
+
+Osserviamo che se dobbiamo controllare l'incremento, ci dobbiamo arrestare appena che il valore assoluto di \(\frac{f(x_n)}{f^\prime (x_n)}\) scende al di sotto di una certa tolleranza. 
+
+\lstinputlisting{../zeri/newton.m}
+
+Testiamo il metodo di bisezione su \(f\):
+
+\begin{lstlisting}[numbers=none]
+>> f = @(x) exp(x)-x.^2-sin(x)-1;
+>> df = @(x) exp(x)-2*x-cos(x);
+>> [c, fc, it] = newton(f, df, 1.5, 1e-6,100)
+c = 1.2797
+fc = 2.2204e-16
+it = 5
+\end{lstlisting}
+
+% *********************************************************************************************
+
+\begin{esercizio}
+Testo
+\end{esercizio}
+
+\lstinputlisting{../zeri/newton\_errors.m}
