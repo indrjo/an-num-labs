@@ -4,19 +4,18 @@
 \documentclass[ structure      = article
               , maketitlestyle = standard
               , secstyle       = center
-              , secfont        = roman
+              %, secfont        = roman
               %, subsecstyle    = center
               , subsecfont     = roman
               , headerstyle    = center
               , liststyle      = aligned
-              , twocolcontents = toc
+              %, twocolcontents = toc
+              , quotesize      = normalsize
               ]{suftesi}
 
 \usepackage[no-math]{fontspec}
-\setmainfont{Linux Libertine O}
-\setmonofont{Source Code Pro}[Scale=MatchLowercase]
-%\usepackage[tt=false]{libertine}
-%\usepackage{sourcecodepro}
+\usepackage[rm,tt=false]{libertine}
+\usepackage[scale=.9]{sourcecodepro}
 
 \usepackage{polyglossia}
 \setmainlanguage{italian}
@@ -30,6 +29,8 @@
 \usepackage{anyfontsize}
 
 \usepackage{indentfirst}
+
+\usepackage{graphicx}
 
 %\usepackage[original]{abstract}
 %\renewcommand{\abstracttextfont}{\normalfont\normalsize}

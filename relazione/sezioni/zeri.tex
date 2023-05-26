@@ -4,6 +4,12 @@
 
 \section{Metodi di ricerca di zeri}
 
+\begin{figure}
+\centering
+\includegraphics[width=.7\textwidth]{../zeri/graph1.png}
+\caption{Grafico di \(f(x) := e^x - x^2 - \sin x - 1\)}
+\end{figure}
+
 \begin{esercizio}
 Scrivere una funzione
 \begin{center}
@@ -14,7 +20,27 @@ metodo di bisezione per la ricerca di una funzione \lstinline£f£ nell'interval
 sull'intervallo \([-2, 2]\).
 \end{esercizio}
 
-L'implementazione qui sotto usa il \enquote{teorema degli zeri} e l'algoritmo di bisezione.
+L'implementazione qui sotto usa il {\em teorema degli zeri}:
+\begin{quotation}
+Sia \(f : [a, b] \to \erre\) continua con \(f(a)f(b) < 0\). Allora esiste \(c \in ]a, b[\) tale che \(f(c) = 0\).
+\end{quotation}
+
+e l'algoritmo di bisezione che descriviamo velocemente.
+
+\begin{enumerate}
+\item \([a_0, b_0] := [a, b]\).
+\item Per \(n \in \enne\), consideriamo \([a_n, b_n]\). Se \(f\) si annulla in uno tra i punti \(a_n, b_n, c_n := \frac{a_n+b_n}{2}\), allora qualche zero è stato individuato. Altrimenti, si dà l'intervallo
+\[[a_{n+1}, b_{n+1}] := \begin{cases} [a_n, c_n] & \text{se } f(a_n)f(c_n) < 0 \\ [a_n, c_n] & \text{se } f(c_n)f(b_n) > 0 \end{cases}.\]
+\end{enumerate}
+
+Osserviamo che per ogni \(c \in [a_n, b_n]\) si ha 
+\[\lvert c-c_n \rvert \le \frac{a_n+b_n}{2} \text{ per ogni } n \in \enne\]
+e che quindi
+\[\lvert c-c_n \rvert \le \frac{a_0+b_0}{2^{n+1}} \text{ per ogni } n \in \enne\]
+
+Ovviamente, per un'implementazione al calcolatore non possiamo procedere indefinitamente. Scegliamo di arrestarci quando viene superato un certo limite di iterazioni oppure quando il numero
+\[\frac{a_n-b_n}{2}\]
+scende sotto una fissato valore.
 
 \lstinputlisting{../zeri/bisezione.m}
 
@@ -22,11 +48,10 @@ Testiamo il metodo di bisezione su \(f\):
 
 \begin{lstlisting}[numbers=none]
 >> f = @(x) exp(x)-x.^2-sin(x)-1;
->> df = @(x) exp(x)-2*x-cos(x);
->> [c, fc, it] = bisezione(f, 1, 1.5, 1e-12,100)
-c = 1.2797
-fc = 6.6813e-13
-it = 39
+>> [c, fc, iter] = bisezione(f, 1, 1.5, 1e-12, 100)
+c = 1.279701331002798
+fc = 1.349587108734340e-12
+iter = 38
 \end{lstlisting}
 
 % *********************************************************************************************
@@ -48,21 +73,45 @@ Osserviamo che se dobbiamo controllare l'incremento, ci dobbiamo arrestare appen
 
 \lstinputlisting{../zeri/newton.m}
 
-Testiamo il metodo di bisezione su \(f\):
+Testiamo questo metodo su \(f\):
 
 \begin{lstlisting}[numbers=none]
 >> f = @(x) exp(x)-x.^2-sin(x)-1;
 >> df = @(x) exp(x)-2*x-cos(x);
->> [c, fc, it] = newton(f, df, 1.5, 1e-6,100)
-c = 1.2797
-fc = 2.2204e-16
-it = 5
+>> [c, fc, iter] = newton(f, df, 2, 1e-6, 100)
+c = 1.279701331001091
+fc = 7.083222897108499e-14
+iter = 6
 \end{lstlisting}
 
 % *********************************************************************************************
 
+\begin{figure}
+\centering
+\includegraphics[width=.7\textwidth]{../zeri/graph2.png}
+\caption{Grafico di \(f(x) = (x-1)\ln x\)}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=.7\textwidth]{../zeri/convergences.png}
+\caption{Grafico degli incrementi al variare del numero di iterazioni}
+\end{figure}
+
 \begin{esercizio}
-Testo
+Considerare la funzione \(f(x) = (x-1)\ln x\). Applicare il metodo di \textenglish{Newton-Raphson} e il metodo di \textenglish{Newton-Raphson} {\em modificato} per la ricerca della radice doppia \(1\) e confrontare graficamente gli ordini di convergenza dei due metodi.
 \end{esercizio}
 
+Se \(\alpha\) è una radice con molteplicità \(m \ge 2\), il metodo di \textenglish{Newton-Raphson} ha ordine \(1\). Se però sappiamo a priori \(m\), possiamo modificare questo metodo così:
+\[\begin{cases} x_0 \in \erre \text{ scelto} \\ x_{n+1} = x_n - m\frac{f(x_n)}{f^\prime (x_n)} \text{ per } n \in \enne \end{cases}\]
+ed avere una convergenza quadratica.
+
+Modifichiamo \lstinline£newton£ in questo modo: tra gli output teniamo conto di \(m\), c'è un solo output questa volta ed è una lista degli incrementi \(\left\lvert x_{n+1} - x_n \right\rvert\).
+
 \lstinputlisting{../zeri/newton\_errors.m}
+
+Il seguente script disegna il grafico che permette di confrontare la velocità di convergenza nei casi \lstinline£m=1£ e \lstinline£m=2£.
+
+\lstinputlisting{../zeri/convergences.m}
+
+

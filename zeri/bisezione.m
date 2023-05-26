@@ -10,7 +10,7 @@ function [c, fc, iter] = bisezione(f, a, b, tol, itmax)
   %   fc    : la funzione f valutata in c
   %   iter  : numero iterazioni effettuate
   iter = 0;
-  while abs(a-b) > tol && iter < itmax
+  while abs(a-b)/2 > tol && iter < itmax
     % Nel caso in cui uno dei due estremi è
     % uno zero, ci fermiamo direttamente.
     if f(a) == 0
@@ -23,10 +23,14 @@ function [c, fc, iter] = bisezione(f, a, b, tol, itmax)
       % e [c, b], dove c è il punto medio di [a, c], e
       % si seleziona quello che ha uno zero.
       c = (a+b)/2;
-      if f(a)*f(c) < 0
-        b = c; % lo zero sta nell'intervallo [a, c]
+      if f(c) == 0
+        return;
       else
-        a = c; % lo zero sta nell'intervallo [c, b]
+        if f(a)*f(c) < 0
+          b = c; % lo zero sta nell'intervallo [a, c]
+        else
+          a = c; % lo zero sta nell'intervallo [c, b]
+        end
       end
     end
   iter = iter+1;
