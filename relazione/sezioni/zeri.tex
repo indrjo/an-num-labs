@@ -13,42 +13,34 @@
 \begin{esercizio}
 Scrivere una funzione
 \begin{center}
-\lstinline£[c,fc,iter]=bisezione(f,a,b,tol,itmax)£
+\lstinline£[c, fc, iter] = bisezione(f, a, b, tol, itmax)£
 \end{center}
 metodo di bisezione per la ricerca di una funzione \lstinline£f£ nell'intervallo \lstinline£[a, b]£. Qui, \lstinline£tol£ è la tolleranza sull'approssimazione della radice e \lstinline£itmax£ è il numero massimo di iterazioni disposte a fare. Per quanto riguarda l'output, \lstinline£c£ è l'approssimazione trovata, \lstinline£fc£ è \lstinline£f(c)£ e \lstinline£iter£ è il numero di iterazioni fatte effettivamente per arrivare all'approssimazione \lstinline£c£. Testare la funzione per la ricerca di una delle radici di
 \[f(x) := e^x - x^2 - \sin x - 1\]
 sull'intervallo \([-2, 2]\).
 \end{esercizio}
 
-L'implementazione qui sotto usa il {\em teorema degli zeri}:
-\begin{quotation}
-Sia \(f : [a, b] \to \erre\) continua con \(f(a)f(b) < 0\). Allora esiste \(c \in ]a, b[\) tale che \(f(c) = 0\).
-\end{quotation}
-
-e l'algoritmo di bisezione che descriviamo velocemente.
-
+L'implementazione qui sotto usa il {\em teorema degli zeri}\footnote{Sia \(f : [a, b] \to \erre\) continua con \(f(a)f(b) < 0\). Allora esiste \(c \in ]a, b[\) tale che \(f(c) = 0\).} e l'algoritmo di bisezione che descriviamo velocemente.
 \begin{enumerate}
-\item \([a_0, b_0] := [a, b]\).
+\item Iniziamo con \([a_0, b_0] := [a, b]\).
 \item Per \(n \in \enne\), consideriamo \([a_n, b_n]\). Se \(f\) si annulla in uno tra i punti \(a_n, b_n, c_n := \frac{a_n+b_n}{2}\), allora qualche zero è stato individuato. Altrimenti, si dà l'intervallo
 \[[a_{n+1}, b_{n+1}] := \begin{cases} [a_n, c_n] & \text{se } f(a_n)f(c_n) < 0 \\ [a_n, c_n] & \text{se } f(c_n)f(b_n) > 0 \end{cases}.\]
 \end{enumerate}
-
-Osserviamo che per ogni \(c \in [a_n, b_n]\) si ha 
-\[\lvert c-c_n \rvert \le \frac{a_n+b_n}{2} \text{ per ogni } n \in \enne\]
-e che quindi
+A tal scopo è utile osservare che per ogni \(c \in [a_n, b_n]\) si ha 
+%\[\lvert c-c_n \rvert \le \frac{a_n+b_n}{2} \text{ per ogni } n \in \enne\]
+%e che quindi
 \[\lvert c-c_n \rvert \le \frac{a_0+b_0}{2^{n+1}} \text{ per ogni } n \in \enne\]
-
-Ovviamente, per un'implementazione al calcolatore non possiamo procedere indefinitamente. Scegliamo di arrestarci quando viene superato un certo limite di iterazioni oppure quando il numero
-\[\frac{a_n-b_n}{2}\]
-scende sotto una fissato valore.
+Questa disuguaglianza dà un stima dell'errore commesso al passo \(n\)-esimo. Ovviamente, per un'implementazione al calcolatore non possiamo procedere indefinitamente: scegliamo di arrestarci quando viene superato un certo limite di iterazioni oppure quando il numero
+\[\frac{a_n-b_n}{2} = \frac{a_0-b_0}{2^{n+1}}\]
+scende sotto un valore fissato.
 
 \lstinputlisting{../zeri/bisezione.m}
 
 Testiamo il metodo di bisezione su \(f\):
 
 \begin{lstlisting}[numbers=none]
->> f = @(x) exp(x)-x.^2-sin(x)-1;
->> [c, fc, iter] = bisezione(f, 1, 1.5, 1e-12, 100)
+octave> f = @(x) exp(x)-x.^2-sin(x)-1;
+octave> [c, fc, iter] = bisezione(f, 1, 1.5, 1e-12, 100)
 c = 1.279701331002798
 fc = 1.349587108734340e-12
 iter = 38
@@ -59,7 +51,7 @@ iter = 38
 \begin{esercizio}
 Scrivere una funzione
 \begin{center}
-\lstinline£[c,fc,iter]=newton(f,df,x0,tol,itmax)£
+\lstinline£[c, fc, iter] = newton(f, df, x0, tol, itmax)£
 \end{center}
 che implementa il metodo di \textenglish{Newton-Raphson} per la ricerca di uno zero di una funzione \lstinline£f£ con derivata \lstinline£df£. Qui, \lstinline£x0£ è il punto da cui parte il metodo, \lstinline£tol£ è la tolleranza sull'approssimazione della radice e \lstinline£itmax£ è il numero massimo di iterazioni disposte a fare. Per quanto riguarda l'output, \lstinline£c£ è l'approssimazione trovata, \lstinline£fc£ è \lstinline£f(c)£ e \lstinline£iter£ è il numero di iterazioni fatte effettivamente per arrivare all'approssimazione \lstinline£c£. Testare la funzione per la ricerca di una delle radici di
 \[f(x) := e^x - x^2 - \sin x - 1\]
@@ -69,16 +61,16 @@ sull'intervallo \([-2, 2]\).
 Richiamiamo che il metodo di \textenglish{Newton-Raphson} si scrive come
 \[\begin{cases} x_0 \in \erre \text{ scelto} \\ x_{n+1} = x_n - \frac{f(x_n)}{f^\prime (x_n)} \text{ per } n \in \enne \end{cases}\]
 
-Osserviamo che se dobbiamo controllare l'incremento, ci dobbiamo arrestare appena che il valore assoluto di \(\frac{f(x_n)}{f^\prime (x_n)}\) scende al di sotto di una certa tolleranza. 
+Osserviamo che se dobbiamo controllare l'incremento, ci dobbiamo arrestare quando il valore assoluto di \(\frac{f(x_n)}{f^\prime (x_n)}\) scende al di sotto di una certa tolleranza. Anche in questo caso imponiamo un numero massimo di iterazioni. 
 
 \lstinputlisting{../zeri/newton.m}
 
 Testiamo questo metodo su \(f\):
 
 \begin{lstlisting}[numbers=none]
->> f = @(x) exp(x)-x.^2-sin(x)-1;
->> df = @(x) exp(x)-2*x-cos(x);
->> [c, fc, iter] = newton(f, df, 2, 1e-6, 100)
+octave> f = @(x) exp(x)-x.^2-sin(x)-1;
+octave> df = @(x) exp(x)-2*x-cos(x);
+octave> [c, fc, iter] = newton(f, df, 2, 1e-6, 100)
 c = 1.279701331001091
 fc = 7.083222897108499e-14
 iter = 6

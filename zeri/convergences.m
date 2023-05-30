@@ -6,7 +6,7 @@ x0 = 1.5;
 tol = 1e-6;
 itmax = 100;
 
-fplot(f, [-2,2], "LineWidth", 2); grid on;
+fplot(f, [-2, 2], "LineWidth", 2); grid on;
 print graph2.png
 
 [errs1] = newton_errors(f, df, x0, 1, tol, itmax);
