@@ -10,7 +10,7 @@ function [c, fc, iter] = bisezione(f, a, b, tol, itmax)
   %   fc    : la funzione f valutata in c
   %   iter  : numero iterazioni effettuate
   iter = 0;
-  while abs(a-b)/2 > tol && iter < itmax
+  while abs(a-b) > tol && iter < itmax
     % Nel caso in cui uno dei due estremi è
     % uno zero, ci fermiamo direttamente.
     if f(a) == 0
